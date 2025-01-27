@@ -38,14 +38,25 @@ dat2 <-
 predicts2 <- as.numeric(mod2$fitted.values >= 0.5)
 confusionMatrix(as.factor(predicts2), as.factor(dat2$group_res))
 
+
+
 lm3 <- read_excel("03_outputs/0302_tables/for_pic.xlsx") %>%
   mutate(value = value * 100)
 
+lm3 <- read_excel("03_outputs/pic.xlsx") %>%
+  mutate(value = value * 100,
+         name = factor(name, ordered = T, 
+                       levels = c("Самомотивация", "Мотивация саморазвития", "Упорство", "Мышление роста: интеллект",  "Исследовательский потенциал",
+                                  "Класс: 11", "Класс: 10", "Класс: 9", "Класс: 8",  "Тип образовательного учреждения: Школы при университете",
+                                  "Тип образовательного учреждения: Лицеи", "Пол: Женский", "Удовлетворенность успеваемостью", "Успеваемость: Хорошисты", 
+                                  "Успеваемость: Отличники", "Обогащенность среды", "Включенность родителей в процесс обучения")))
+
 ggplot(lm3, aes(x = name, y = value)) +
   geom_segment( aes(x = name, xend = name, y = 0, yend = value), color = "black") +
-  geom_point( color = "slateblue2", size = 4, alpha = 1) +
+  geom_point( color = "#e38734", size = 4, alpha = 1) +
   geom_label(aes(name, value + 0.5*value, label = paste0(signif(value,2), "%")), colour = "black", nudge_x = 0.35, size = 4) +
   coord_flip() +
   theme_bw() +
   ylim(-20, 30) +
   labs(y = "Предельные эффекты", x = "")
+
